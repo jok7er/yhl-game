@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a1a1a;
+            margin: 0;
+            font-family: 'Microsoft Yahei';
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 70vh;
+        }
+
+        h1 {
+            color: #ff69b4;
+            text-align: center;
+            margin-bottom: 50px;
+            text-shadow: 0 0 10px rgba(255,105,180,0.5);
+        }
+
+        .btn {
+            position: absolute;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.5s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        #yesBtn {
+            background: #ff69b4;
+            color: white;
+            left: 45%;
+        }
+
+        #noBtn {
+            background: #87ceeb;
+            color: white;
+            left: 55%;
+        }
+
+        .end-message {
+            display: none;
+            font-size: 40px;
+            color: #ff1493;
+            text-align: center;
+            animation: neonPulse 1s infinite;
+        }
+
+        /* 烟花效果 */
+        .firework {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            animation: explode 1s forwards;
+        }
+
+        @keyframes neonPulse {
+            0%, 100% { text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff69b4; }
+            50% { text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff69b4; }
+        }
+
+        @keyframes explode {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(12); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <h1>杨惠鳞是不是pig？🐷</h1>
+    <div class="container">
+        <button id="yesBtn" class="btn" onclick="showConfession()">是</button>
+        <button id="noBtn" class="btn" onclick="moveButton()">不是</button>
+    </div>
+    <div class="end-message">你终于承认啦！🎉</div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        let moveCount = 0;
+        
+        function getRandomPosition() {
+            const container = document.querySelector('.container');
+            const maxX = container.offsetWidth - noBtn.offsetWidth;
+            const maxY = container.offsetHeight - noBtn.offsetHeight;
+            
+            return {
+                x: Math.random() * maxX,
+                y: Math.random() * maxY
+            }
+        }
+
+        function moveButton() {
+            moveCount++;
+            const newPos = getRandomPosition();
+            noBtn.style.left = `${newPos.x}px`;
+            noBtn.style.top = `${newPos.y}px`;
+            noBtn.style.transform = `rotate(${moveCount * 45}deg)`;
+        }
+
+        function showConfession() {
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('h1').style.display = 'none';
+            document.querySelector('.end-message').style.display = 'block';
+            
+            // 烟花特效
+            createFireworks();
+            setInterval(createFireworks, 300);
+        }
+
+        function createFireworks() {
+            const colors = ['#ff69b4', '#87ceeb', '#ffd700', '#7cfc00'];
+            for(let i = 0; i < 12; i++) {
+                const firework = document.createElement('div');
+                firework.className = 'firework';
+                firework.style.left = `${Math.random() * 100}%`;
+                firework.style.top = `${Math.random() * 100}%`;
+                firework.style.background = colors[Math.floor(Math.random()*colors.length)];
+                
+                document.body.appendChild(firework);
+                setTimeout(() => firework.remove(), 1000);
+            }
+        }
+    </script>
+</body>
+</html>
